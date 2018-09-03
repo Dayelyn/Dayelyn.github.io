@@ -7,6 +7,115 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Shortest Route Searching with Limited Conditions</title>
+				<description>&lt;h1 id=&quot;abstract&quot;&gt;Abstract&lt;/h1&gt;
+
+&lt;p&gt;This is the the first paper of three I have been received from the company as the The literature study. &lt;strong&gt;The main idea&lt;/strong&gt; of the paper is searching for the shortest route under specific conditions as following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Parking in a node of a directed graph is limited in a certain period;&lt;/li&gt;
+  &lt;li&gt;Not all desirable delay of departure time from a given node is permitted (almost the same with bullet 1);&lt;/li&gt;
+  &lt;li&gt;Travelling time along the edge leading from i to j depends on the departure time from i.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Lots of pernomena in the real life can be modelled as the problem with mentioned conditions. An example is a one-way road with traffic light system.&lt;/p&gt;
+
+&lt;h1 id=&quot;problem-formulation&quot;&gt;Problem Formulation&lt;/h1&gt;
+&lt;p&gt;Define $G = (N,E)$ as an $n$-node finite directed graph, then we denote:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;$N = \{1,…,n\}$:            the set of all nodes;&lt;/li&gt;
+  &lt;li&gt;$E = \{(i, j), i, j\in N\}$:  the set of all directed edges;&lt;/li&gt;
+  &lt;li&gt;$N_k = \{j \in N, (k,j) \in E\}$: the set of all j that edge exists from $k$ to $j$;&lt;/li&gt;
+  &lt;li&gt;$N^*$:                        the set of known nodes in the shortest route from origin;&lt;/li&gt;
+  &lt;li&gt;$N^{**}$:                     the set of all nodes that reachable from current node;&lt;/li&gt;
+  &lt;li&gt;$d_{ij}(t)$:                  travelling time from node $i$ to $j$;&lt;/li&gt;
+  &lt;li&gt;$P_i = \{ [\alpha_i^h,  \beta_i^h], h = 1,…,H_i\}$: the set of permitted parking time intervals at node i;&lt;/li&gt;
+  &lt;li&gt;$A_j$: the set of feasible arrival times to node $j$;&lt;/li&gt;
+  &lt;li&gt;$D_j$: the set of feasible departure times from node $j$, $D_j = g(A_j, P_j)$.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;A feasible route from node $r$ to node $s$ in $G$ is featured by:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;ordered set of nodes $\{r = i_1, i_2, …,i_q = s\}$ such that $(i_k, i_{k+1}) \in E$ for all $k = 1, …, q-1$;&lt;/li&gt;
+  &lt;li&gt;ordered set of pairs of time $\{(t_{i_1}^{‘},  t_{i_1}^{“}),…,(t_{i_q}^{‘},  t_{i_q}^{“})\}$, where $t_j^{‘}$ is the arrival time to node $j$ and $t_j^{“}$ is the departure time from $t_j$.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Then if a node $i_k$ is feasible in the route, the requirements are:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;$(t_{i_k}^{‘},  t_{i_k}^{“}) \in P_{i_k}$, indicating the delayed time in node $i_k$ should lies in the permitted time interval;&lt;/li&gt;
+  &lt;li&gt;$d_{i_ki_{k+1}}(t_{i_k}^{“}) &amp;lt; \infty$, indicating no discontinuity on the edge $(i_k, i_{k+1})$. If there is any, a new node can be construct to avoid the problem. &lt;strong&gt;(The unvaild edge will be divided into two parts, which can be used to cut unavailable paths.)&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Then the problem can be formulated as: &lt;strong&gt;finding a feasible route $\{r = i_1, i_2, …,i_q = s\}$ from $r$ to $s$, minimizes $t_s^{‘}.$&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;solution&quot;&gt;Solution&lt;/h1&gt;
+&lt;h2 id=&quot;preliminary&quot;&gt;Preliminary&lt;/h2&gt;
+&lt;p&gt;A few conclusions should be specified before we introduce the algorithm to solve the problem:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Since the parking and delay is limited in the problem, a cycle (visiting a node more than once) can be involved in the final route to find the shortest route;&lt;/li&gt;
+  &lt;li&gt;Due to bullet 1, it is necessary to update $A_j$ whenever $N^*$ is expanded;&lt;/li&gt;
+  &lt;li&gt;$D_j$ is constructed with $A_j$ and $P_j$. If $A_j \cap [\alpha_j^h,  \beta_j^h] = \varnothing$, indicating no parking at node $j$, then $D_j = A_j$; if $A_j \cap [\alpha_j^h,  \beta_j^h] \not = \varnothing, Min \{ A_j \cap [\alpha_j^h,  \beta_j^h] \} = t^{‘}$, indicating parking occurs at the node $j$ and $t^{‘}$ is the smallest time point, then $\forall t: t^{‘} \leq t \leq \beta_j^h, t \in D_j$;&lt;/li&gt;
+  &lt;li&gt;The algorithm keeps expanding &lt;script type=&quot;math/tex&quot;&gt;N^{**}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;N^*&lt;/script&gt;, and transferring candidates in &lt;script type=&quot;math/tex&quot;&gt;N^{**}&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;N^*&lt;/script&gt;. Once the destination has been added into &lt;script type=&quot;math/tex&quot;&gt;N^*&lt;/script&gt;, the shortest route is found.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;algorithm&quot;&gt;Algorithm&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;Initialization:&lt;/strong&gt; Set the start point to $r$&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;$N^*=\varnothing, N^{**}={r}$&lt;/li&gt;
+  &lt;li&gt;$A_1 = {0}, D_1=\varnothing, A_j=D_j=0$&lt;/li&gt;
+  &lt;li&gt;$k = r$&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Transfer Node:&lt;/strong&gt; transfer valid node $k$ from &lt;script type=&quot;math/tex&quot;&gt;N^{**}&lt;/script&gt; to $N^*$, update $D_k$&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;$N^* = N^* \cup \{k\}$, &lt;script type=&quot;math/tex&quot;&gt;N^{**} = N^{**} - \{k\}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;$D = g(A_k, P_k) - D_k$, $D_k = D_k \cup D$, $A_k = \varnothing$. Here excluding $D_k$ because we need a new departure time if we do not visit $k$ for the first time. The old time needs to be removed to update $D_k$. After moving $k$ into $N^*$, $A_k$ can be set to $\varnothing$ because it has already been an available point.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Search for Available Nodes:&lt;/strong&gt; search for available nodes and add them into $N^{**}$, update $A_j$&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;$\forall j \in N_k$, compute $A_j = A_j \cup \{t + d_{kj}(t),t \in D\} - D_j$. Here is the same reason as mentioned to exclude $D_j$. We always need the current arrival and departure time.&lt;/li&gt;
+  &lt;li&gt;$\bar N_k = \{ j \in N_k, A_j \not = \varnothing\}$ represents all reachable nodes start from $k$&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;N^{**} = N^{**} \cup \bar N_k&lt;/script&gt;, add reachable nodes to $N^{**}$&lt;/li&gt;
+  &lt;li&gt;if $N^{**} = \varnothing$, then the algorithm is terminated because there is no feasible route. Otherwise continue to the next step&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Search for the Nodes with Shortest Time Consuming:&lt;/strong&gt; in all available nodes, search for the one with shortest time comsuming. If it is the destination point, then terminate. Otherwise transfer it to $N^*$ and keep loop&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;$\forall j \in \bar N_k$, compute $T_j = inf\{t, t\in A_j\}$. Here we define $T_j$ as the infimum of time consuming when entering node $j$&lt;/li&gt;
+  &lt;li&gt;Let &lt;script type=&quot;math/tex&quot;&gt;T^* = Min\{T_j, j \in N^{**}\}&lt;/script&gt;, and &lt;script type=&quot;math/tex&quot;&gt;k \in N^{**}&lt;/script&gt; be the node for which &lt;script type=&quot;math/tex&quot;&gt;T_k = T^*&lt;/script&gt;. If &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; is the destination node, then terminate, &lt;script type=&quot;math/tex&quot;&gt;T^*&lt;/script&gt; is the length of the shortest route. Otherwise transfer &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; from from &lt;script type=&quot;math/tex&quot;&gt;N^{**}&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;N^*&lt;/script&gt;. &lt;strong&gt;Here $k$ actually means the next valid point, instead of the $k$ mentioned in the first step.&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;something-confused&quot;&gt;Something Confused&lt;/h1&gt;
+&lt;p&gt;This note is mostly a copy from the orginal paper &lt;em&gt;Shortest Route with Time Dependent Length of Edges and Limited Delay Possibilities in Nodes&lt;/em&gt; by &lt;em&gt;J.Halpern&lt;/em&gt;. I just add some note on where there can be misunderstood if you read it for the first time. But still, I am confused in the following part:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The organism of updating $A_j$;&lt;/li&gt;
+  &lt;li&gt;Why not set $N^{**}$ to $\varnothing$ after transfer node. It looks like not only one node is added in step 3;&lt;/li&gt;
+  &lt;li&gt;It looks like $T^*$ represents the arrival time of entering the destination, why it is the length of the shortest route?&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+				<pubDate>Mon, 03 Sep 2018 13:19:51 +0800</pubDate>
+				<link>http://localhost:4000/literature_study/2018/09/03/shortest-route-searching-with-limited-delay.html</link>
+				<guid isPermaLink="true">http://localhost:4000/literature_study/2018/09/03/shortest-route-searching-with-limited-delay.html</guid>
+			</item>
+		
+			<item>
+				<title>SSH Configuration</title>
+				<description>&lt;h2 id=&quot;ssh-configuration&quot;&gt;SSH configuration&lt;/h2&gt;
+
+</description>
+				<pubDate>Sat, 01 Sep 2018 00:00:00 +0800</pubDate>
+				<link>http://localhost:4000/blog/2018/09/01/ssh-config.html</link>
+				<guid isPermaLink="true">http://localhost:4000/blog/2018/09/01/ssh-config.html</guid>
+			</item>
+		
+			<item>
 				<title>Welcome</title>
 				<description>&lt;h2 id=&quot;welcome-to-github-pages&quot;&gt;Welcome to GitHub Pages&lt;/h2&gt;
 
@@ -48,368 +157,6 @@
 				<pubDate>Fri, 31 Aug 2018 00:00:00 +0800</pubDate>
 				<link>http://localhost:4000/blog/2018/08/31/welcome.html</link>
 				<guid isPermaLink="true">http://localhost:4000/blog/2018/08/31/welcome.html</guid>
-			</item>
-		
-			<item>
-				<title>A first Artical for Testing the function</title>
-				<description>&lt;p&gt;Nothing special. Just a test for the personal website.&lt;/p&gt;
-</description>
-				<pubDate>Fri, 31 Aug 2018 00:00:00 +0800</pubDate>
-				<link>http://localhost:4000/blog/2018/08/31/test-artical.html</link>
-				<guid isPermaLink="true">http://localhost:4000/blog/2018/08/31/test-artical.html</guid>
-			</item>
-		
-			<item>
-				<title>Welcome9</title>
-				<description>&lt;h2 id=&quot;welcome-to-github-pages&quot;&gt;Welcome to GitHub Pages&lt;/h2&gt;
-
-&lt;p&gt;You can use the &lt;a href=&quot;https://github.com/Dayelyn/Dayelyn.github.io/edit/master/index.md&quot;&gt;editor on GitHub&lt;/a&gt; to maintain and preview the content for your website in Markdown files.&lt;/p&gt;
-
-&lt;p&gt;Whenever you commit to this repository, GitHub Pages will run &lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt; to rebuild the pages in your site, from the content in your Markdown files.&lt;/p&gt;
-
-&lt;h3 id=&quot;markdown&quot;&gt;Markdown&lt;/h3&gt;
-
-&lt;p&gt;Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for&lt;/p&gt;
-
-&lt;div class=&quot;language-markdown highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Syntax highlighted code block
-
-&lt;span class=&quot;gh&quot;&gt;# Header 1&lt;/span&gt;
-&lt;span class=&quot;gu&quot;&gt;## Header 2&lt;/span&gt;
-&lt;span class=&quot;gu&quot;&gt;### Header 3&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;
--&lt;/span&gt; Bulleted
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; List
-&lt;span class=&quot;p&quot;&gt;
-1.&lt;/span&gt; Numbered
-&lt;span class=&quot;p&quot;&gt;2.&lt;/span&gt; List
-
-&lt;span class=&quot;gs&quot;&gt;**Bold**&lt;/span&gt; and _Italic_ and &lt;span class=&quot;sb&quot;&gt;`Code`&lt;/span&gt; text
-
-&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;Link&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;](&lt;/span&gt;&lt;span class=&quot;sx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; and !&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;Image&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;](&lt;/span&gt;&lt;span class=&quot;sx&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;For more details see &lt;a href=&quot;https://guides.github.com/features/mastering-markdown/&quot;&gt;GitHub Flavored Markdown&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3 id=&quot;jekyll-themes&quot;&gt;Jekyll Themes&lt;/h3&gt;
-
-&lt;p&gt;Your Pages site will use the layout and styles from the Jekyll theme you have selected in your &lt;a href=&quot;https://github.com/Dayelyn/Dayelyn.github.io/settings&quot;&gt;repository settings&lt;/a&gt;. The name of this theme is saved in the Jekyll &lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt; configuration file.&lt;/p&gt;
-
-&lt;h3 id=&quot;support-or-contact&quot;&gt;Support or Contact&lt;/h3&gt;
-
-&lt;p&gt;Having trouble with Pages? Check out our &lt;a href=&quot;https://help.github.com/categories/github-pages-basics/&quot;&gt;documentation&lt;/a&gt; or &lt;a href=&quot;https://github.com/contact&quot;&gt;contact support&lt;/a&gt; and we’ll help you sort it out.&lt;/p&gt;
-</description>
-				<pubDate>Tue, 31 Jul 2018 00:00:00 +0800</pubDate>
-				<link>http://localhost:4000/nothing/2018/07/31/welcome2.html</link>
-				<guid isPermaLink="true">http://localhost:4000/nothing/2018/07/31/welcome2.html</guid>
-			</item>
-		
-			<item>
-				<title>Read Me</title>
-				<description>&lt;h1 id=&quot;jekyll-xixia&quot;&gt;Jekyll Xixia&lt;/h1&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Get it from &lt;a href=&quot;https://github.com/zxixia/jekyll-xixia&quot;&gt;github&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;See the &lt;a href=&quot;http://xixia.info/jekyll-xixia/&quot;&gt;live demo&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;See it &lt;a href=&quot;http://xixia.info/&quot;&gt;in action on my own blog&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;A simple and clean Jekyll theme using &lt;a href=&quot;http://getbootstrap.com&quot;&gt;bootstrap&lt;/a&gt;
-(not to be confused with jekyll-bootstrap) that’s easy to modify and very
-modular in component and element reuse.&lt;/p&gt;
-
-&lt;p&gt;The theme works well on mobile phones, using a collapsable nav bar and hiding the
-sidebar. The links pane in the sidebar is available on mobile through the nav menu,
-and you can do the same thing for any other sections added to the sidebar.&lt;/p&gt;
-
-&lt;p&gt;Don’t forget to occassionally merge against my upstream repository so you can get
-the latest changes. Pull requests are encouraged and accepted!&lt;/p&gt;
-
-&lt;h1 id=&quot;preview&quot;&gt;Preview&lt;/h1&gt;
-&lt;p&gt;&lt;img src=&quot;//assets/images/preview.png&quot; alt=&quot;Xixia&quot; /&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;license&quot;&gt;License&lt;/h1&gt;
-
-&lt;p&gt;The content of this theme is distributed and licensed under a
-&lt;img src=&quot;/assets/images/cc_by_88x31.png&quot; alt=&quot;License Badge&quot; /&gt;
-&lt;a href=&quot;https://creativecommons.org/licenses/by/4.0/legalcode&quot;&gt;Creative Commons Attribution 4.0 License&lt;/a&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;This license lets others distribute, remix, tweak, and build upon your work,
-even commercially, as long as they credit you for the original creation. This
-is the most accommodating of licenses offered. Recommended for maximum
-dissemination and use of licensed materials.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;In other words: you can do anything you want with this theme on any site, just please
-provide a link to &lt;a href=&quot;https://github.com/zxixia/jekyll-xixia&quot;&gt;the original theme on github&lt;/a&gt;
-so I get credit for the original design. Beyond that, have at it!&lt;/p&gt;
-
-&lt;h1 id=&quot;thanks&quot;&gt;Thanks&lt;/h1&gt;
-
-&lt;p&gt;1，&lt;a href=&quot;http://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;2，&lt;a href=&quot;http://getbootstrap.com/&quot;&gt;Bootstrap&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;3，&lt;a href=&quot;https://github.com/&quot;&gt;Github&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;4，&lt;a href=&quot;https://github.com/scotte/jekyll-clean&quot;&gt;Jekyll Clean Theme&lt;/a&gt;&lt;/p&gt;
-
-</description>
-				<pubDate>Tue, 19 Sep 2017 00:00:00 +0800</pubDate>
-				<link>http://localhost:4000/other/2017/09/19/README.html</link>
-				<guid isPermaLink="true">http://localhost:4000/other/2017/09/19/README.html</guid>
-			</item>
-		
-			<item>
-				<title>How to get beautiful ASCII pics and ASCII text</title>
-				<description>&lt;h3 id=&quot;1ascii-generator&quot;&gt;1，ASCII Generator&lt;/h3&gt;
-
-&lt;p&gt;In &lt;a href=&quot;http://www.network-science.de/ascii/&quot;&gt;ASCII Generator&lt;/a&gt;, you can generate your ASCII texts。&lt;/p&gt;
-
-&lt;p&gt;Such like the &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;XIXIA&lt;/code&gt;&lt;/strong&gt;！&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-v&quot; data-lang=&quot;v&quot;&gt;____  ___._______  ___.___   _____   
-\   \/  /|   \   \/  /|   | /  _  \  
- \     / |   |\     / |   |/  /_\  \ 
- /     \ |   |/     \ |   /    |    \
-/___/\  \|___/___/\  \|___\____|__  /
-      \_/          \_/            \/ 
-
-------------------------------------
-___   ___  __  ___   ___  __       ___      
-\  \ /  / |  | \  \ /  / |  |     /   \     
- \  V  /  |  |  \  V  /  |  |    /  ^  \    
-  &amp;gt;   &amp;lt;   |  |   &amp;gt;   &amp;lt;   |  |   /  /_\  \   
- /  .  \  |  |  /  .  \  |  |  /  _____  \  
-/__/ \__\ |__| /__/ \__\ |__| /__/     \__\ 
-
-------------------------------------
-__   _________   _______          
-\ \ / /_   _\ \ / /_   _|   /\    
- \ V /  | |  \ V /  | |    /  \   
-  &amp;gt; &amp;lt;   | |   &amp;gt; &amp;lt;   | |   / /\ \  
- / . \ _| |_ / . \ _| |_ / ____ \ 
-/_/ \_\_____/_/ \_\_____/_/    \_\   &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;h3 id=&quot;2chriscom&quot;&gt;2，Chris.com&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&quot;http://www.chris.com/ascii/&quot;&gt;Chris.com&lt;/a&gt; collects a lot of ASCII pics, such like the world map：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-v&quot; data-lang=&quot;v&quot;&gt;-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----
-           . _..::__:  ,-&quot;-&quot;._        |7       ,     _,.__
-   _.___ _ _&amp;lt;_&amp;gt;`!(._`.`-.    /         _._     `_ ,_/  '  '-._.---.-.__
-&amp;gt;.{     &quot; &quot; `-==,',._\{  \  / {)      / _ &quot;&amp;gt;_,-' `                mt-2_
-  \_.:--.       `._ )`^-. &quot;'       , [_/(                       __,/-'
- '&quot;'     \         &quot;    _L        oD_,--'                )     /. (|
-          |           ,'          _)_.\\._&amp;lt;&amp;gt; 6              _,' /  '
-          `.         /           [_/_'` `&quot;(                &amp;lt;'}  )
-           \\    .-. )           /   `-'&quot;..' `:.#          _)  '
-    `        \  (  `(           /         `:\  &amp;gt; \  ,-^.  /' '
-              `._,   &quot;&quot;         |           \`'   \|   ?_)  {\
-                 `=.---.        `._._       ,'     &quot;`  |' ,- '.
-                   |    `-._         |     /          `:`&amp;lt;_|h--._
-                   (        &amp;gt;        .     | ,          `=.__.`-'\
-                    `.     /         |     |{|              ,-.,\     .
-                     |   ,'           \   / `'            ,&quot;     \
-                     |  /              |_'                |  __  /
-                     | |                                  '-'  `-'   \.
-                     |/                                         &quot;    /
-                     \.                                             '
-
-                      ,/            ______._.--._ _..---.---------._
-     ,-----&quot;-..?----_/ )      __,-'&quot;             &quot;                  (
--.._(                  `-----'                                       `-
------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----
-Map (C) 1998 Matthew Thomas. Freely usable if this line is included. &amp;lt;-&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;&lt;br /&gt;
-Elephant.&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-v&quot; data-lang=&quot;v&quot;&gt;              ___.-~&quot;~-._   __....__
-            .'    `    \ ~&quot;~        ``-.
-           /` _      )  `\              `\
-          /`  a)    /     |               `\
-         :`        /      |                 \
-    &amp;lt;`-._|`  .-.  (      /   .            `;\\
-     `-. `--'_.'-.;\___/'   .      .       | \\
-  _     /:--`     |        /     /        .'  \\
- (&quot;\   /`/        |       '     '         /    :`;
- `\'\_/`/         .\     /`~`=-.:        /     ``
-   `._.'          /`\    |      `\      /(
-                 /  /\   |        `Y   /  \
-           jgs  J  /  Y  |         |  /`\  \
-               /  |   |  |         |  |  |  |
-              &quot;---&quot;  /___|        /___|  /__|
-                     '&quot;&quot;&quot;         '&quot;&quot;&quot;  '&quot;&quot;&quot;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;h3 id=&quot;3welcome-to-lost-in-xixia&quot;&gt;3，Welcome to lost in Xixia&lt;/h3&gt;
-&lt;p&gt;The 404 page of Xixia, is based on ASCII pics and ASCII texts!&lt;/p&gt;
-
-&lt;p&gt;So, warmly welcome you to lost in &lt;a href=&quot;http://xixia.info/welcome-lost-in-xixia&quot;&gt;Xixia&lt;/a&gt;!&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;h3 id=&quot;thanks&quot;&gt;Thanks：&lt;/h3&gt;
-
-&lt;p&gt;1，&lt;a href=&quot;http://www.chris.com/ascii/&quot;&gt;Chris.com&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;2，&lt;a href=&quot;http://www.network-science.de/ascii/&quot;&gt;ASCII Generator&lt;/a&gt;&lt;/p&gt;
-
-</description>
-				<pubDate>Fri, 15 Sep 2017 00:00:00 +0800</pubDate>
-				<link>http://localhost:4000/programmer/2017/09/15/ascii-art-and-text.html</link>
-				<guid isPermaLink="true">http://localhost:4000/programmer/2017/09/15/ascii-art-and-text.html</guid>
-			</item>
-		
-			<item>
-				<title>Welcome to Jekyll!</title>
-				<description>&lt;p&gt;You’ll find this post in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
-
-&lt;p&gt;To add new posts, simply add a file in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code class=&quot;highlighter-rouge&quot;&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
-
-&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Tom'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints 'Hi, Tom' to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Check out the &lt;a href=&quot;https://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;
-
-</description>
-				<pubDate>Tue, 05 Sep 2017 14:10:51 +0800</pubDate>
-				<link>http://localhost:4000/jekyll/2017/09/05/welcome-to-jekyll.html</link>
-				<guid isPermaLink="true">http://localhost:4000/jekyll/2017/09/05/welcome-to-jekyll.html</guid>
-			</item>
-		
-			<item>
-				<title>Readme of Jekyll!</title>
-				<description>&lt;h1 id=&quot;jekyll&quot;&gt;&lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt;&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://rubygems.org/gems/jekyll&quot;&gt;&lt;img src=&quot;https://img.shields.io/gem/v/jekyll.svg&quot; alt=&quot;Gem Version&quot; /&gt;&lt;/a&gt;
-&lt;a href=&quot;https://travis-ci.org/jekyll/jekyll&quot;&gt;&lt;img src=&quot;https://img.shields.io/travis/jekyll/jekyll/master.svg?label=Linux%20build&quot; alt=&quot;Linux Build Status&quot; /&gt;&lt;/a&gt;
-&lt;a href=&quot;https://ci.appveyor.com/project/jekyll/jekyll/branch/master&quot;&gt;&lt;img src=&quot;https://img.shields.io/appveyor/ci/jekyll/jekyll/master.svg?label=Windows%20build&quot; alt=&quot;Windows Build status&quot; /&gt;&lt;/a&gt;
-&lt;a href=&quot;https://codeclimate.com/github/jekyll/jekyll/coverage&quot;&gt;&lt;img src=&quot;https://img.shields.io/codeclimate/coverage/github/jekyll/jekyll.svg&quot; alt=&quot;Test Coverage&quot; /&gt;&lt;/a&gt;
-&lt;a href=&quot;https://codeclimate.com/github/jekyll/jekyll&quot;&gt;&lt;img src=&quot;https://img.shields.io/codeclimate/github/jekyll/jekyll.svg&quot; alt=&quot;Code Climate&quot; /&gt;&lt;/a&gt;
-&lt;a href=&quot;https://gemnasium.com/jekyll/jekyll&quot;&gt;&lt;img src=&quot;https://img.shields.io/gemnasium/jekyll/jekyll.svg&quot; alt=&quot;Dependency Status&quot; /&gt;&lt;/a&gt;
-&lt;a href=&quot;https://hakiri.io/github/jekyll/jekyll/master&quot;&gt;&lt;img src=&quot;https://hakiri.io/github/jekyll/jekyll/master.svg&quot; alt=&quot;Security&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Jekyll is a simple, blog-aware, static site generator perfect for personal, project, or organization sites. Think of it like a file-based CMS, without all the complexity. Jekyll takes your content, renders Markdown and Liquid templates, and spits out a complete, static website ready to be served by Apache, Nginx or another web server. Jekyll is the engine behind &lt;a href=&quot;https://pages.github.com&quot;&gt;GitHub Pages&lt;/a&gt;, which you can use to host sites right from your GitHub repositories.&lt;/p&gt;
-
-&lt;h2 id=&quot;philosophy&quot;&gt;Philosophy&lt;/h2&gt;
-
-&lt;p&gt;Jekyll does what you tell it to do — no more, no less. It doesn’t try to outsmart users by making bold assumptions, nor does it burden them with needless complexity and configuration. Put simply, Jekyll gets out of your way and allows you to concentrate on what truly matters: your content.&lt;/p&gt;
-
-&lt;p&gt;See: https://jekyllrb.com/philosophy&lt;/p&gt;
-
-&lt;h2 id=&quot;having-trouble&quot;&gt;Having trouble?&lt;/h2&gt;
-
-&lt;p&gt;See: https://jekyllrb.com/docs/troubleshooting/&lt;/p&gt;
-
-&lt;h2 id=&quot;getting-started&quot;&gt;Getting Started&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://jekyllrb.com/docs/installation/&quot;&gt;Install&lt;/a&gt; the gem&lt;/li&gt;
-  &lt;li&gt;Read up about its &lt;a href=&quot;https://jekyllrb.com/docs/usage/&quot;&gt;Usage&lt;/a&gt; and &lt;a href=&quot;https://jekyllrb.com/docs/configuration/&quot;&gt;Configuration&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Take a gander at some existing &lt;a href=&quot;https://wiki.github.com/jekyll/jekyll/sites&quot;&gt;Sites&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/jekyll/jekyll/fork&quot;&gt;Fork&lt;/a&gt; and &lt;a href=&quot;https://jekyllrb.com/docs/contributing/&quot;&gt;Contribute&lt;/a&gt; your own modifications&lt;/li&gt;
-  &lt;li&gt;Have questions? Check out our official forum community &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt; or &lt;a href=&quot;https://botbot.me/freenode/jekyll/&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;#jekyll&lt;/code&gt; on irc.freenode.net&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;code-of-conduct&quot;&gt;Code of Conduct&lt;/h2&gt;
-
-&lt;p&gt;In order to have a more open and welcoming community, Jekyll adheres to a
-&lt;a href=&quot;CODE_OF_CONDUCT.markdown&quot;&gt;code of conduct&lt;/a&gt; adapted from the Ruby on Rails code of
-conduct.&lt;/p&gt;
-
-&lt;p&gt;Please adhere to this code of conduct in any interactions you have in the
-Jekyll community. It is strictly enforced on all official Jekyll
-repositories, websites, and resources. If you encounter someone violating
-these terms, please let a &lt;a href=&quot;https://github.com/orgs/jekyll/teams/affinity-team-captains/members&quot;&gt;team captain&lt;/a&gt; know and we will address it as soon as possible.&lt;/p&gt;
-
-&lt;h2 id=&quot;diving-in&quot;&gt;Diving In&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://import.jekyllrb.com/docs/home/&quot;&gt;Migrate&lt;/a&gt; from your previous system&lt;/li&gt;
-  &lt;li&gt;Learn how the &lt;a href=&quot;https://jekyllrb.com/docs/frontmatter/&quot;&gt;YAML Front Matter&lt;/a&gt; works&lt;/li&gt;
-  &lt;li&gt;Put information on your site with &lt;a href=&quot;https://jekyllrb.com/docs/variables/&quot;&gt;Variables&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Customize the &lt;a href=&quot;https://jekyllrb.com/docs/permalinks/&quot;&gt;Permalinks&lt;/a&gt; your posts are generated with&lt;/li&gt;
-  &lt;li&gt;Use the built-in &lt;a href=&quot;https://jekyllrb.com/docs/templates/&quot;&gt;Liquid Extensions&lt;/a&gt; to make your life easier&lt;/li&gt;
-  &lt;li&gt;Use custom &lt;a href=&quot;https://jekyllrb.com/docs/plugins/&quot;&gt;Plugins&lt;/a&gt; to generate content specific to your site&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;license&quot;&gt;License&lt;/h2&gt;
-
-&lt;p&gt;See the &lt;a href=&quot;https://github.com/jekyll/jekyll/blob/master/LICENSE&quot;&gt;LICENSE&lt;/a&gt; file.&lt;/p&gt;
-</description>
-				<pubDate>Tue, 05 Sep 2017 14:10:51 +0800</pubDate>
-				<link>http://localhost:4000/jekyll/2017/09/05/reademe-of-jekyll.html</link>
-				<guid isPermaLink="true">http://localhost:4000/jekyll/2017/09/05/reademe-of-jekyll.html</guid>
-			</item>
-		
-			<item>
-				<title>Another copy of the Readme of Jekyll!</title>
-				<description>&lt;h1 id=&quot;jekyll&quot;&gt;&lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt;&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://rubygems.org/gems/jekyll&quot;&gt;&lt;img src=&quot;https://img.shields.io/gem/v/jekyll.svg&quot; alt=&quot;Gem Version&quot; /&gt;&lt;/a&gt;
-&lt;a href=&quot;https://travis-ci.org/jekyll/jekyll&quot;&gt;&lt;img src=&quot;https://img.shields.io/travis/jekyll/jekyll/master.svg?label=Linux%20build&quot; alt=&quot;Linux Build Status&quot; /&gt;&lt;/a&gt;
-&lt;a href=&quot;https://ci.appveyor.com/project/jekyll/jekyll/branch/master&quot;&gt;&lt;img src=&quot;https://img.shields.io/appveyor/ci/jekyll/jekyll/master.svg?label=Windows%20build&quot; alt=&quot;Windows Build status&quot; /&gt;&lt;/a&gt;
-&lt;a href=&quot;https://codeclimate.com/github/jekyll/jekyll/coverage&quot;&gt;&lt;img src=&quot;https://img.shields.io/codeclimate/coverage/github/jekyll/jekyll.svg&quot; alt=&quot;Test Coverage&quot; /&gt;&lt;/a&gt;
-&lt;a href=&quot;https://codeclimate.com/github/jekyll/jekyll&quot;&gt;&lt;img src=&quot;https://img.shields.io/codeclimate/github/jekyll/jekyll.svg&quot; alt=&quot;Code Climate&quot; /&gt;&lt;/a&gt;
-&lt;a href=&quot;https://gemnasium.com/jekyll/jekyll&quot;&gt;&lt;img src=&quot;https://img.shields.io/gemnasium/jekyll/jekyll.svg&quot; alt=&quot;Dependency Status&quot; /&gt;&lt;/a&gt;
-&lt;a href=&quot;https://hakiri.io/github/jekyll/jekyll/master&quot;&gt;&lt;img src=&quot;https://hakiri.io/github/jekyll/jekyll/master.svg&quot; alt=&quot;Security&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Jekyll is a simple, blog-aware, static site generator perfect for personal, project, or organization sites. Think of it like a file-based CMS, without all the complexity. Jekyll takes your content, renders Markdown and Liquid templates, and spits out a complete, static website ready to be served by Apache, Nginx or another web server. Jekyll is the engine behind &lt;a href=&quot;https://pages.github.com&quot;&gt;GitHub Pages&lt;/a&gt;, which you can use to host sites right from your GitHub repositories.&lt;/p&gt;
-
-&lt;h2 id=&quot;philosophy&quot;&gt;Philosophy&lt;/h2&gt;
-
-&lt;p&gt;Jekyll does what you tell it to do — no more, no less. It doesn’t try to outsmart users by making bold assumptions, nor does it burden them with needless complexity and configuration. Put simply, Jekyll gets out of your way and allows you to concentrate on what truly matters: your content.&lt;/p&gt;
-
-&lt;p&gt;See: https://jekyllrb.com/philosophy&lt;/p&gt;
-
-&lt;h2 id=&quot;having-trouble&quot;&gt;Having trouble?&lt;/h2&gt;
-
-&lt;p&gt;See: https://jekyllrb.com/docs/troubleshooting/&lt;/p&gt;
-
-&lt;h2 id=&quot;getting-started&quot;&gt;Getting Started&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://jekyllrb.com/docs/installation/&quot;&gt;Install&lt;/a&gt; the gem&lt;/li&gt;
-  &lt;li&gt;Read up about its &lt;a href=&quot;https://jekyllrb.com/docs/usage/&quot;&gt;Usage&lt;/a&gt; and &lt;a href=&quot;https://jekyllrb.com/docs/configuration/&quot;&gt;Configuration&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Take a gander at some existing &lt;a href=&quot;https://wiki.github.com/jekyll/jekyll/sites&quot;&gt;Sites&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/jekyll/jekyll/fork&quot;&gt;Fork&lt;/a&gt; and &lt;a href=&quot;https://jekyllrb.com/docs/contributing/&quot;&gt;Contribute&lt;/a&gt; your own modifications&lt;/li&gt;
-  &lt;li&gt;Have questions? Check out our official forum community &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt; or &lt;a href=&quot;https://botbot.me/freenode/jekyll/&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;#jekyll&lt;/code&gt; on irc.freenode.net&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;code-of-conduct&quot;&gt;Code of Conduct&lt;/h2&gt;
-
-&lt;p&gt;In order to have a more open and welcoming community, Jekyll adheres to a
-&lt;a href=&quot;CODE_OF_CONDUCT.markdown&quot;&gt;code of conduct&lt;/a&gt; adapted from the Ruby on Rails code of
-conduct.&lt;/p&gt;
-
-&lt;p&gt;Please adhere to this code of conduct in any interactions you have in the
-Jekyll community. It is strictly enforced on all official Jekyll
-repositories, websites, and resources. If you encounter someone violating
-these terms, please let a &lt;a href=&quot;https://github.com/orgs/jekyll/teams/affinity-team-captains/members&quot;&gt;team captain&lt;/a&gt; know and we will address it as soon as possible.&lt;/p&gt;
-
-&lt;h2 id=&quot;diving-in&quot;&gt;Diving In&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://import.jekyllrb.com/docs/home/&quot;&gt;Migrate&lt;/a&gt; from your previous system&lt;/li&gt;
-  &lt;li&gt;Learn how the &lt;a href=&quot;https://jekyllrb.com/docs/frontmatter/&quot;&gt;YAML Front Matter&lt;/a&gt; works&lt;/li&gt;
-  &lt;li&gt;Put information on your site with &lt;a href=&quot;https://jekyllrb.com/docs/variables/&quot;&gt;Variables&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Customize the &lt;a href=&quot;https://jekyllrb.com/docs/permalinks/&quot;&gt;Permalinks&lt;/a&gt; your posts are generated with&lt;/li&gt;
-  &lt;li&gt;Use the built-in &lt;a href=&quot;https://jekyllrb.com/docs/templates/&quot;&gt;Liquid Extensions&lt;/a&gt; to make your life easier&lt;/li&gt;
-  &lt;li&gt;Use custom &lt;a href=&quot;https://jekyllrb.com/docs/plugins/&quot;&gt;Plugins&lt;/a&gt; to generate content specific to your site&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;license&quot;&gt;License&lt;/h2&gt;
-
-&lt;p&gt;See the &lt;a href=&quot;https://github.com/jekyll/jekyll/blob/master/LICENSE&quot;&gt;LICENSE&lt;/a&gt; file.&lt;/p&gt;
-</description>
-				<pubDate>Tue, 05 Sep 2017 14:10:51 +0800</pubDate>
-				<link>http://localhost:4000/jekyll/2017/09/05/another-copy-of-the-reademe-of-jekyll.html</link>
-				<guid isPermaLink="true">http://localhost:4000/jekyll/2017/09/05/another-copy-of-the-reademe-of-jekyll.html</guid>
 			</item>
 		
 	</channel>
