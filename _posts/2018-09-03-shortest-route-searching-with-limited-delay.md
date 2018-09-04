@@ -7,6 +7,9 @@ tags: Path_Planning
 description: This is just another copy of the read me page of Jekyll.
 ---
 
+<script type="text/javascript" async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 # Abstract
 
 This is the the first paper of three I have been received from the company as the The literature study. **The main idea** of the paper is searching for the shortest route under specific conditions as following:
