@@ -3,7 +3,7 @@ layout: post
 title:  "A* with the heuristic function of FastMap for path planning"
 date:   2018-09-04 10:25:51 +0800
 categories: Literature_Study
-tags: Path_Planning, A*, FastMap
+tags: Path_Planning A* FastMap
 description: The second literature study. Introduce a modified FastMap heuristic function for A* algorithm for path planning. You can get a overall on the FastMap algorithm and how to modify it to adapt to A*. The detail A* needs to added in the future.
 ---
 
