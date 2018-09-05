@@ -4,11 +4,16 @@ title:  "Shortest Route Searching with Limited Conditions"
 date:   2018-09-03 13:19:51 +0800
 categories: Literature_Study
 tags: Path_Planning
-description: This is just another copy of the read me page of Jekyll.
+description: First literature study. Introduce a method of searching the shortest path based on time consuming.
 ---
 
 <script type="text/javascript" async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+# Artical Title
+
+Shortest Route with Time Dependant Length of Edges and Limited Delay Possibilities in Nodes.
+By j.Halpern
 
 # Abstract
 
@@ -21,6 +26,7 @@ This is the the first paper of three I have been received from the company as th
 Lots of pernomena in the real life can be modelled as the problem with mentioned conditions. An example is a one-way road with traffic light system. 
 
 # Problem Formulation
+
 Define $G = (N,E)$ as an $n$-node finite directed graph, then we denote:
 
 * $N = \\{1,...,n\\}$:            the set of all nodes;
@@ -47,7 +53,9 @@ Then if a node $i_k$ is feasible in the route, the requirements are:
 Then the problem can be formulated as: **finding a feasible route $\\{r = i_1, i_2, ...,i_q = s\\}$ from $r$ to $s$, minimizes $t_s^{'}.$**
 
 # Solution
+
 ## Preliminary
+
 A few conclusions should be specified before we introduce the algorithm to solve the problem:
 
 * Since the parking and delay is limited in the problem, a cycle (visiting a node more than once) can be involved in the final route to find the shortest route;
@@ -76,7 +84,13 @@ A few conclusions should be specified before we introduce the algorithm to solve
 * $\forall j \in \bar N_k$, compute $T_j = inf\\{t, t\in A_j\\}$. Here we define $T_j$ as the infimum of time consuming when entering node $j$
 * Let $$T^* = Min\{T_j, j \in N^{**}\}$$, and $$k \in N^{**}$$ be the node for which $$T_k = T^*$$. If $$k$$ is the destination node, then terminate, $$T^*$$ is the length of the shortest route. Otherwise transfer $$k$$ from from $$N^{**}$$ to $$N^*$$. **Here $k$ actually means the next valid point, instead of the $k$ mentioned in the first step.**
 
+# Application Scenario
+
+Up to now I have not seen any implementation of the idea. But an assumption is that the method can be used to **cut a path into pieces if the agent has to stop anywhere on the path.** For example, when multiple agents working together and there some crossovers on their paths, the crossover point can be regarded as a new node and paths of them need to be re-calculated to ensure the global optimization.
+
+
 # Something Confused
+
 This note is mostly a copy from the orginal paper *Shortest Route with Time Dependent Length of Edges and Limited Delay Possibilities in Nodes* by *J.Halpern*. I just add some note on where there can be misunderstood if you read it for the first time. But still, I am confused in the following part:
 
 * The organism of updating $A_j$;

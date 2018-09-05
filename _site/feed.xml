@@ -7,8 +7,118 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>$A^*$ with the heuristic function of FastMap for path planning</title>
+				<description>&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot;&gt;&lt;/script&gt;
+
+&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;&lt;/script&gt;
+
+&lt;h1 id=&quot;article-title&quot;&gt;Article Title&lt;/h1&gt;
+&lt;p&gt;The FastMap Algorithm for Shortest Path Computations.
+By Liron Cohen etc.&lt;/p&gt;
+
+&lt;h1 id=&quot;forewords&quot;&gt;Forewords&lt;/h1&gt;
+
+&lt;p&gt;Although I have some unsolved problems in the first paper, I still move to the second one. A project needs to set a goal or milestone, otherwise it will be endless. So as to the literature study. I guess I can ask my mentor for help after they come back from their tough project :)&lt;/p&gt;
+
+&lt;h1 id=&quot;abstract&quot;&gt;Abstract&lt;/h1&gt;
+
+&lt;p&gt;In this paper, a given edge-weighted undirected graph is projected to a $k$-dimension Euclidean space by a modified FastMap algorithm. Then, the shortest path between any two nodes can be computed by $A^*$ search with Euclidean distance as the heuristic function.&lt;/p&gt;
+
+&lt;p&gt;In the note I am going to start with the FastMap algorithm and the $A^*$ search. Then the modified algorithm will be introduced.&lt;/p&gt;
+
+&lt;h1 id=&quot;fastmap&quot;&gt;FastMap&lt;/h1&gt;
+&lt;p&gt;FastMap is a dimension reduction method with short time comsumption and mostly used in data mining. See more on the &lt;a href=&quot;http://www.cs.cmu.edu/~christos/PUBLICATIONS.OLDER/sigmod95.ps.gz&quot;&gt;original paper&lt;/a&gt;. It can map any abstract objects into a $k$-dimension euclidean space with keeping their geometric relations at most, where $k$ can be specified by users.&lt;/p&gt;
+
+&lt;p&gt;The basic idea of the FastMap is to look for the furthest pariwise node as a coordinate in every iteration, map all other nodes on the coordinate, then map all nodes to a hyperplane that is perpendicular to the coordinate and enter the next iteration. With the recursive step, all nodes will be mapped into a $k$-dimension space with orthogonal coordinates.&lt;/p&gt;
+
+&lt;p&gt;Since we are going to use the FastMap with $A^*$ in a given edge-weighted undirected graph, all notations in the following part of the article are base on the gragh theory.&lt;/p&gt;
+
+&lt;p&gt;The work flow of the FastMap is as follows:&lt;/p&gt;
+
+&lt;h2 id=&quot;step-1-find-the-furthest-pairwise-node&quot;&gt;Step 1: Find the Furthest Pairwise Node&lt;/h2&gt;
+
+&lt;p&gt;In the first iteration, we need to find the furthest pair of nodes as the coordinate of the first dimension.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/u2nnAVZ.png&quot; alt=&quot;Imgur&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Algorithm 1 in the figure above shows the details of how to find the furthest pair of nodes. Here the algorithm has to be repeated several times to have the final result. The reason of repeatition is to reduce the computation complexity. One important thing is that the &lt;strong&gt;distance&lt;/strong&gt; is based on user setting. In the next part we will set a special function to calculate the distance.&lt;/p&gt;
+
+&lt;h2 id=&quot;step-2-project-all-other-nodes-on-the-generated-coordinate&quot;&gt;Step 2: Project All Other Nodes on the Generated Coordinate&lt;/h2&gt;
+
+&lt;p&gt;According to &lt;strong&gt;Step 1&lt;/strong&gt;, we have a coordinate alongside $O_a$ and $O_b$. Then as shown in figure 1, we can project all other node on the coordinate with the help of cosine law:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/rWyGBC8.png&quot; alt=&quot;Imgur&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;For a arbitrary node $O_i$, the coordinate $x_i$ projected on axis $(O_a, O_b)$ can be calculate with cosine law. Particularly, $x_a = 0, x_b = d_{ab}$.&lt;/p&gt;
+
+&lt;h2 id=&quot;step-3-find-a-hyperplane-that-is-perpendicular-to-the-current-coordinate-project-all-nodes-on-the-plane&quot;&gt;Step 3: Find a Hyperplane that is Perpendicular to the Current Coordinate, Project All Nodes on the Plane&lt;/h2&gt;
+
+&lt;p&gt;Up to now we have already reduce all nodes into a 1-d space. If you would like to analyze the data in a higher dimension, we need to project nodes in another dimension, which is perpendicular to the current dimension, as shown in figure 2.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/mglg5iL.png&quot; alt=&quot;Imgur&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We can see that if we project all nodes in the new dimension, $x_a = x_b = 0$ due to the perpendicularity. Since now all nodes are on a 2-d Euclidean space, we can use the $L_2$ distance as the distance function (the formula is given in 3-d Euclidean space).&lt;/p&gt;
+
+&lt;h2 id=&quot;step-4-for-all-nodes-on-the-hyperplane-go-to-step-1&quot;&gt;Step 4: For All Nodes on the Hyperplane, Go to Step 1&lt;/h2&gt;
+
+&lt;p&gt;Still, we would like to find the furthest pairwise node to project all nodes on the coordinate established by them. Now we can see that users can specify any $k$ for $k$-dimension to reprensent the data.&lt;/p&gt;
+
+&lt;h1 id=&quot;a&quot;&gt;$A^*$&lt;/h1&gt;
+
+&lt;p&gt;I would prefer adding it later, since the paper is mainly focused on the modified FastMap.&lt;/p&gt;
+
+&lt;h1 id=&quot;modified-fastmap&quot;&gt;Modified FastMap&lt;/h1&gt;
+
+&lt;p&gt;In this paper, authors make two modifications on the FastMap algorithm to adapt to the path searching problem.&lt;/p&gt;
+
+&lt;h2 id=&quot;distance-function-for-finding-the-furtherest-node&quot;&gt;Distance Function for Finding the Furtherest Node&lt;/h2&gt;
+
+&lt;p&gt;As mentioned above, in the first step in the FastMap we need to calculate the “furthest” pair of nodes. The distance function is specified by users. In the modified version, since we focus on a edge-weighted undirected graph, a shortest path tree rooted at a random node $n_a$ is construct. Then we search for the deepest node in the tree as the “furthest” node and the depth is $d_ab$.&lt;/p&gt;
+
+&lt;p&gt;After the establishment of the coordinate, other parameters referring to distance in figure 1 can be attained by the same way, which means $d_{ai}, d_{ib}$ are all calculated by the shortest path tree rooted at $n_a$.&lt;/p&gt;
+
+&lt;h2 id=&quot;distance-function-on-the-coordinate-and-the-hyperplane&quot;&gt;Distance Function on the Coordinate and the Hyperplane&lt;/h2&gt;
+
+&lt;p&gt;Recall that we use the $L_2$ distance in Step 2 and 3. The author of the paper proves that it has to be changed to $L_1$ distance in order to keep &lt;strong&gt;admissibility and consistency&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Then the distance on the $K^{th}$ coordinate needs to be changed to:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;[p_i]_K = \frac{(d_{ai}-d_{ib}+d_{ab})}{2}&lt;/script&gt;
+
+&lt;p&gt;and the distance on the next hyperplane needs to be changed to:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;D_{new}(O_i, O_j) = D_{old}(O_i,O_j) - |[p_i]_K - [p_j]_K|&lt;/script&gt;
+
+&lt;p&gt;specifically, in our case the $D_{new}$ and $D_{old}$ refers to weight in the graph.&lt;/p&gt;
+
+&lt;p&gt;The modified FastMap algorithm can be seen in the following figure:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/Ys6BRPj.png&quot; alt=&quot;Imgur&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;application-scenario&quot;&gt;Application Scenario&lt;/h1&gt;
+
+&lt;p&gt;Basically this is an optimization for $A^*$ heuristic function. It is well known that a better heuristic function can lead to a more optimal path. This method probably can output a better plan than other heuristic function.&lt;/p&gt;
+
+&lt;h1 id=&quot;something-confused&quot;&gt;Something Confused&lt;/h1&gt;
+&lt;p&gt;I guess the author has demonstrated the algorithm clearly in the paper, but I am not sure about how important the admissibility and consistency are to the $A^*$.&lt;/p&gt;
+</description>
+				<pubDate>Tue, 04 Sep 2018 10:25:51 +0800</pubDate>
+				<link>http://localhost:4000/literature_study/2018/09/04/fastmap-with-a-star.html</link>
+				<guid isPermaLink="true">http://localhost:4000/literature_study/2018/09/04/fastmap-with-a-star.html</guid>
+			</item>
+		
+			<item>
 				<title>Shortest Route Searching with Limited Conditions</title>
-				<description>&lt;h1 id=&quot;abstract&quot;&gt;Abstract&lt;/h1&gt;
+				<description>&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot;&gt;&lt;/script&gt;
+
+&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;&lt;/script&gt;
+
+&lt;h1 id=&quot;artical-title&quot;&gt;Artical Title&lt;/h1&gt;
+
+&lt;p&gt;Shortest Route with Time Dependant Length of Edges and Limited Delay Possibilities in Nodes.
+By j.Halpern&lt;/p&gt;
+
+&lt;h1 id=&quot;abstract&quot;&gt;Abstract&lt;/h1&gt;
 
 &lt;p&gt;This is the the first paper of three I have been received from the company as the The literature study. &lt;strong&gt;The main idea&lt;/strong&gt; of the paper is searching for the shortest route under specific conditions as following:&lt;/p&gt;
 
@@ -21,6 +131,7 @@
 &lt;p&gt;Lots of pernomena in the real life can be modelled as the problem with mentioned conditions. An example is a one-way road with traffic light system.&lt;/p&gt;
 
 &lt;h1 id=&quot;problem-formulation&quot;&gt;Problem Formulation&lt;/h1&gt;
+
 &lt;p&gt;Define $G = (N,E)$ as an $n$-node finite directed graph, then we denote:&lt;/p&gt;
 
 &lt;ul&gt;
@@ -52,7 +163,9 @@
 &lt;p&gt;Then the problem can be formulated as: &lt;strong&gt;finding a feasible route $\{r = i_1, i_2, …,i_q = s\}$ from $r$ to $s$, minimizes $t_s^{‘}.$&lt;/strong&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;solution&quot;&gt;Solution&lt;/h1&gt;
+
 &lt;h2 id=&quot;preliminary&quot;&gt;Preliminary&lt;/h2&gt;
+
 &lt;p&gt;A few conclusions should be specified before we introduce the algorithm to solve the problem:&lt;/p&gt;
 
 &lt;ul&gt;
@@ -91,7 +204,12 @@
   &lt;li&gt;Let &lt;script type=&quot;math/tex&quot;&gt;T^* = Min\{T_j, j \in N^{**}\}&lt;/script&gt;, and &lt;script type=&quot;math/tex&quot;&gt;k \in N^{**}&lt;/script&gt; be the node for which &lt;script type=&quot;math/tex&quot;&gt;T_k = T^*&lt;/script&gt;. If &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; is the destination node, then terminate, &lt;script type=&quot;math/tex&quot;&gt;T^*&lt;/script&gt; is the length of the shortest route. Otherwise transfer &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; from from &lt;script type=&quot;math/tex&quot;&gt;N^{**}&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;N^*&lt;/script&gt;. &lt;strong&gt;Here $k$ actually means the next valid point, instead of the $k$ mentioned in the first step.&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
+&lt;h1 id=&quot;application-scenario&quot;&gt;Application Scenario&lt;/h1&gt;
+
+&lt;p&gt;Up to now I have not seen any implementation of the idea. But an assumption is that the method can be used to &lt;strong&gt;cut a path into pieces if the agent has to stop anywhere on the path.&lt;/strong&gt; For example, when multiple agents working together and there some crossovers on their paths, the crossover point can be regarded as a new node and paths of them need to be re-calculated to ensure the global optimization.&lt;/p&gt;
+
 &lt;h1 id=&quot;something-confused&quot;&gt;Something Confused&lt;/h1&gt;
+
 &lt;p&gt;This note is mostly a copy from the orginal paper &lt;em&gt;Shortest Route with Time Dependent Length of Edges and Limited Delay Possibilities in Nodes&lt;/em&gt; by &lt;em&gt;J.Halpern&lt;/em&gt;. I just add some note on where there can be misunderstood if you read it for the first time. But still, I am confused in the following part:&lt;/p&gt;
 
 &lt;ul&gt;
@@ -103,16 +221,6 @@
 				<pubDate>Mon, 03 Sep 2018 13:19:51 +0800</pubDate>
 				<link>http://localhost:4000/literature_study/2018/09/03/shortest-route-searching-with-limited-delay.html</link>
 				<guid isPermaLink="true">http://localhost:4000/literature_study/2018/09/03/shortest-route-searching-with-limited-delay.html</guid>
-			</item>
-		
-			<item>
-				<title>SSH Configuration</title>
-				<description>&lt;h2 id=&quot;ssh-configuration&quot;&gt;SSH configuration&lt;/h2&gt;
-
-</description>
-				<pubDate>Sat, 01 Sep 2018 00:00:00 +0800</pubDate>
-				<link>http://localhost:4000/blog/2018/09/01/ssh-config.html</link>
-				<guid isPermaLink="true">http://localhost:4000/blog/2018/09/01/ssh-config.html</guid>
 			</item>
 		
 			<item>

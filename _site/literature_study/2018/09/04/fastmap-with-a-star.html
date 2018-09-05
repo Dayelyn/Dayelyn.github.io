@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dayelyn</title>
+	<link rel="icon" href="/assets/images/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="assets/css/font-awesome-ie7.min.css">
+    <![endif]-->
+    <!--[if lt IE 9]>
+       <script src="https://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.js"></script>
+    <![endif]-->
+    <link href="/assets/css/main.css" rel="stylesheet" type="text/css">
+
+
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['$','$'], ['\\(','\\)']],
+            displayMath: [ ['$$','$$'], ['\[','\]'] ]
+            }
+        });
+    </script>
+</head>
+
+<body>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="navbar navbar-custom navbar-fixed-top" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Dayelyn</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    
+                    <li class="active"><a href="/">Home</a></li>
+                    <li class="active"><a href="/archive.html">Archive</a></li>
+                    <li class="active"><a href="/categories.html">Categories</a></li>
+                    <li class="active"><a href="/tags.html">Tags</a></li>
+                    <li class="active"><a href="/about.html">About</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="wrap">
+    <div class="container container-left">
+        <div class="row">
+            <div class="col-md-3 hidden-xs">
+                
+<div class="sidebar well">
+    <header class="sidebar-header" role="banner">
+        <a href="/">
+            <img src="/assets/images/dayelyn.png" class="img-circle" />
+        </a>
+        <!--
+        <h3 class="title">
+        <a href="/"></a>
+        </h3>
+        -->
+    </header>
+    <div class="text-center">
+        Robotics
+    </div>
+</div>
+
+
+<div class="sidebar well">
+    <h1>Top Posts</h1>
+    <ul>
+        
+            
+                
+            
+                
+            
+                
+            
+        
+    </ul>
+</div>
+
+
+<div class="sidebar well">
+    <h1>Recent Posts</h1>
+    <ul>
+        
+          <li><a href="/literature_study/2018/09/04/fastmap-with-a-star.html">$A^*$ with the heuristic function of FastMap for path planning</a></li>
+        
+          <li><a href="/literature_study/2018/09/03/shortest-route-searching-with-limited-delay.html">Shortest Route Searching with Limited Conditions</a></li>
+        
+          <li><a href="/blog/2018/08/31/welcome.html">Welcome</a></li>
+        
+    </ul>
+</div>
+
+<div class="sidebar well">
+    
+<h1>Links</h1>
+<ul>
+  <!-- <li><a href="#">One</a></li>
+  <li><a href="#">Two</a></li>
+  <li><a href="#">Three</a></li>
+  <li><a href="#">Four</a></li> -->
+  
+  <li>
+    <a href="https://github.com/zxixia/jekyll-xixia">
+      Jekyll-Xixia
+    </a>
+  </li> 
+  
+</ul>
+
+</div>
+
+            </div>
+            <div class="col-md-9">
+                
+<div class="well article">
+        <h2><a href="/literature_study/2018/09/04/fastmap-with-a-star.html">$A^*$ with the heuristic function of FastMap for path planning</a></h2>
+        <span class="post-date">
+            
+            September-4-2018
+        </span>
+        <hr style="border-top:1px solid #28323C;"/>
+    
+    <div class="post-content">
+    <script type="text/javascript" async="" src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<script type="text/javascript" async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<h1 id="article-title">Article Title</h1>
+<p>The FastMap Algorithm for Shortest Path Computations.
+By Liron Cohen etc.</p>
+
+<h1 id="forewords">Forewords</h1>
+
+<p>Although I have some unsolved problems in the first paper, I still move to the second one. A project needs to set a goal or milestone, otherwise it will be endless. So as to the literature study. I guess I can ask my mentor for help after they come back from their tough project :)</p>
+
+<h1 id="abstract">Abstract</h1>
+
+<p>In this paper, a given edge-weighted undirected graph is projected to a $k$-dimension Euclidean space by a modified FastMap algorithm. Then, the shortest path between any two nodes can be computed by $A^*$ search with Euclidean distance as the heuristic function.</p>
+
+<p>In the note I am going to start with the FastMap algorithm and the $A^*$ search. Then the modified algorithm will be introduced.</p>
+
+<h1 id="fastmap">FastMap</h1>
+<p>FastMap is a dimension reduction method with short time comsumption and mostly used in data mining. See more on the <a href="http://www.cs.cmu.edu/~christos/PUBLICATIONS.OLDER/sigmod95.ps.gz">original paper</a>. It can map any abstract objects into a $k$-dimension euclidean space with keeping their geometric relations at most, where $k$ can be specified by users.</p>
+
+<p>The basic idea of the FastMap is to look for the furthest pariwise node as a coordinate in every iteration, map all other nodes on the coordinate, then map all nodes to a hyperplane that is perpendicular to the coordinate and enter the next iteration. With the recursive step, all nodes will be mapped into a $k$-dimension space with orthogonal coordinates.</p>
+
+<p>Since we are going to use the FastMap with $A^*$ in a given edge-weighted undirected graph, all notations in the following part of the article are base on the gragh theory.</p>
+
+<p>The work flow of the FastMap is as follows:</p>
+
+<h2 id="step-1-find-the-furthest-pairwise-node">Step 1: Find the Furthest Pairwise Node</h2>
+
+<p>In the first iteration, we need to find the furthest pair of nodes as the coordinate of the first dimension.</p>
+
+<p><img src="https://i.imgur.com/u2nnAVZ.png" alt="Imgur" /></p>
+
+<p>Algorithm 1 in the figure above shows the details of how to find the furthest pair of nodes. Here the algorithm has to be repeated several times to have the final result. The reason of repeatition is to reduce the computation complexity. One important thing is that the <strong>distance</strong> is based on user setting. In the next part we will set a special function to calculate the distance.</p>
+
+<h2 id="step-2-project-all-other-nodes-on-the-generated-coordinate">Step 2: Project All Other Nodes on the Generated Coordinate</h2>
+
+<p>According to <strong>Step 1</strong>, we have a coordinate alongside $O_a$ and $O_b$. Then as shown in figure 1, we can project all other node on the coordinate with the help of cosine law:</p>
+
+<p><img src="https://i.imgur.com/rWyGBC8.png" alt="Imgur" /></p>
+
+<p>For a arbitrary node $O_i$, the coordinate $x_i$ projected on axis $(O_a, O_b)$ can be calculate with cosine law. Particularly, $x_a = 0, x_b = d_{ab}$.</p>
+
+<h2 id="step-3-find-a-hyperplane-that-is-perpendicular-to-the-current-coordinate-project-all-nodes-on-the-plane">Step 3: Find a Hyperplane that is Perpendicular to the Current Coordinate, Project All Nodes on the Plane</h2>
+
+<p>Up to now we have already reduce all nodes into a 1-d space. If you would like to analyze the data in a higher dimension, we need to project nodes in another dimension, which is perpendicular to the current dimension, as shown in figure 2.</p>
+
+<p><img src="https://i.imgur.com/mglg5iL.png" alt="Imgur" /></p>
+
+<p>We can see that if we project all nodes in the new dimension, $x_a = x_b = 0$ due to the perpendicularity. Since now all nodes are on a 2-d Euclidean space, we can use the $L_2$ distance as the distance function (the formula is given in 3-d Euclidean space).</p>
+
+<h2 id="step-4-for-all-nodes-on-the-hyperplane-go-to-step-1">Step 4: For All Nodes on the Hyperplane, Go to Step 1</h2>
+
+<p>Still, we would like to find the furthest pairwise node to project all nodes on the coordinate established by them. Now we can see that users can specify any $k$ for $k$-dimension to reprensent the data.</p>
+
+<h1 id="a">$A^*$</h1>
+
+<p>I would prefer adding it later, since the paper is mainly focused on the modified FastMap.</p>
+
+<h1 id="modified-fastmap">Modified FastMap</h1>
+
+<p>In this paper, authors make two modifications on the FastMap algorithm to adapt to the path searching problem.</p>
+
+<h2 id="distance-function-for-finding-the-furtherest-node">Distance Function for Finding the Furtherest Node</h2>
+
+<p>As mentioned above, in the first step in the FastMap we need to calculate the “furthest” pair of nodes. The distance function is specified by users. In the modified version, since we focus on a edge-weighted undirected graph, a shortest path tree rooted at a random node $n_a$ is construct. Then we search for the deepest node in the tree as the “furthest” node and the depth is $d_ab$.</p>
+
+<p>After the establishment of the coordinate, other parameters referring to distance in figure 1 can be attained by the same way, which means $d_{ai}, d_{ib}$ are all calculated by the shortest path tree rooted at $n_a$.</p>
+
+<h2 id="distance-function-on-the-coordinate-and-the-hyperplane">Distance Function on the Coordinate and the Hyperplane</h2>
+
+<p>Recall that we use the $L_2$ distance in Step 2 and 3. The author of the paper proves that it has to be changed to $L_1$ distance in order to keep <strong>admissibility and consistency</strong>.</p>
+
+<p>Then the distance on the $K^{th}$ coordinate needs to be changed to:</p>
+
+<script type="math/tex; mode=display">[p_i]_K = \frac{(d_{ai}-d_{ib}+d_{ab})}{2}</script>
+
+<p>and the distance on the next hyperplane needs to be changed to:</p>
+
+<script type="math/tex; mode=display">D_{new}(O_i, O_j) = D_{old}(O_i,O_j) - |[p_i]_K - [p_j]_K|</script>
+
+<p>specifically, in our case the $D_{new}$ and $D_{old}$ refers to weight in the graph.</p>
+
+<p>The modified FastMap algorithm can be seen in the following figure:</p>
+
+<p><img src="https://i.imgur.com/Ys6BRPj.png" alt="Imgur" /></p>
+
+<h1 id="application-scenario">Application Scenario</h1>
+
+<p>Basically this is an optimization for $A^*$ heuristic function. It is well known that a better heuristic function can lead to a more optimal path. This method probably can output a better plan than other heuristic function.</p>
+
+<h1 id="something-confused">Something Confused</h1>
+<p>I guess the author has demonstrated the algorithm clearly in the paper, but I am not sure about how important the admissibility and consistency are to the $A^*$.</p>
+
+    <hr style="border-top:1px solid #28323C;"/>
+
+    <!-- tags and categories under post -->
+    
+    <ul class="list-unstyled list-inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+         
+            <li class="icon-style"><a href="/categories.html">
+                Literature_Study <span>(2)</span>
+                
+            </a></li>
+        
+      
+    </ul>
+      
+
+    
+    <ul class="list-unstyled list-inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+         
+            <li class="icon-style">
+                <a href="/tags.html">
+                Path_Planning, <span>(1)</span>
+                ,
+                </a>
+            </li>
+         
+            <li class="icon-style">
+                <a href="/tags.html">
+                A*, <span>(1)</span>
+                ,
+                </a>
+            </li>
+         
+            <li class="icon-style">
+                <a href="/tags.html">
+                FastMap <span>(1)</span>
+                
+                </a>
+            </li>
+        
+      
+      
+    </ul>
+      
+
+    </div>
+    
+</div>
+<div class="pagination">
+    
+    
+    <a class="btn btn-default" href="/literature_study/2018/09/03/shortest-route-searching-with-limited-delay.html" class="previous">Older Post</a>
+    
+</div>
+            </div>
+        </div>
+    </div>
+
+    
+<div class="footer">
+    <p>&copy;2018 Dayelyn , Powered by
+            
+                <a href="http://jekyllrb.com/">
+                Jekyll
+                </a>
+                <!-- not the last, output a ',' -->
+                
+                ,
+                
+            
+                <a href="http://getbootstrap.com/">
+                Bootstrap
+                </a>
+                <!-- not the last, output a ',' -->
+                
+                ,
+                
+            
+                <a href="https://github.com/">
+                Github
+                </a>
+                <!-- not the last, output a ',' -->
+                
+                ,
+                
+            
+                <a href="https://github.com/zxixia/jekyll-xixia">
+                Xixia
+                </a>
+                <!-- not the last, output a ',' -->
+                
+            
+    </p>
+</div>
+
+<!-- 
+    
+
+    
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', '', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+ 
+-->
+
+</body>
+</html>
+
+</div>
