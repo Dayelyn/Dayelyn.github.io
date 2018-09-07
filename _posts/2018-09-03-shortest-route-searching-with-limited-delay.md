@@ -4,7 +4,7 @@ title:  "Shortest Route Searching with Limited Conditions"
 date:   2018-09-03 13:19:51 +0800
 categories: Literature_Study
 tags: Path_Planning
-description: First literature study. Introduce a method of searching the shortest path based on time consuming.
+description: The first literature study. Introduce a method of searching the shortest path based on time consuming.
 ---
 
 <script type="text/javascript" async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
