@@ -10,7 +10,7 @@ description: The third literature study. An effective crossover is mentioned to 
 <script type="text/javascript" async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
-# Artical Title
+# Article Title
 
 A new crossover approach for solving the multiple travelling salesmen problem using genetic algorithms. By Shuai Yuan etc.
 
