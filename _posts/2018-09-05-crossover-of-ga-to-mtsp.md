@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  "A* with the heuristic function of FastMap for path planning"
+title:  "A New Crossover Approach of GA to Solve MTSP"
 date:   2018-09-05 13:51:51 +0800
 categories: Literature_Study
 tags: Path_Planning Genetic_Algorithm MTSP
-description: The third literature study.
+description: The third literature study. An effective crossover is mentioned to solve the multiple travelling salesman problem.
 ---
 
 <script type="text/javascript" async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
