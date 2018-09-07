@@ -64,7 +64,7 @@ Recall in step 2 we assign 2 cities for salesman 2, 2 to salesman 2 and 1 for sa
 
 ![Imgur](https://i.imgur.com/ESgJ8O9.png)
 
-# Step 5: Organization
+## Step 5: Organization
 
 Recall in step 1 of how the representation is. Now the first part of the child chromsome has been constructed. For the second part, we know that in step 2 we select $(2,2,1)$ and in step 4 we assign $(2,1,1)$ for each salesman. Therefore, the second part can be constructed in the following figure:
 
