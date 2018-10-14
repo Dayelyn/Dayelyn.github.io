@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Traps on setting the database(MySQL & Redis)"
-date:   2018-09-05 13:51:51 +0800
+date:   2018-10-14 13:51:51 +0800
 categories: Tricks
 tags: Database MySQL Redis
 description: Traps I met when set/get key-values when using MySQL and Redis. The tricks can be achieved from Google but I summarized a little bit here.
